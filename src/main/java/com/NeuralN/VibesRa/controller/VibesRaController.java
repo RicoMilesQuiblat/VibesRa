@@ -29,4 +29,22 @@ public class VibesRaController {
         List<Hotel> allHotels = hotelService.getAllHotels();
         return new ResponseEntity<>(allHotels, HttpStatus.OK);
     }
+
+    @GetMapping("/hotel")
+    public ResponseEntity<Hotel> getHotelByName(@RequestParam String name){
+        Hotel hotel = hotelService.getHotelByName(name);
+        return new ResponseEntity<>(hotel, HttpStatus.OK);
+    }
+
+    @GetMapping("/location")
+    public ResponseEntity<List<Hotel>> getHotelsByLocation(@RequestParam String location){
+        List<Hotel> hotels = hotelService.getHotelsByLocation(location);
+        return new ResponseEntity<>(hotels,HttpStatus.OK );
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Hotel> deleteHotel(@RequestParam String name){
+        Hotel hotel = hotelService.deleteHotel(name);
+        return new ResponseEntity<>(hotel, HttpStatus.OK);
+    }
 }
