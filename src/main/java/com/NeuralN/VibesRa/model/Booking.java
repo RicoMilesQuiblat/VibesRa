@@ -13,11 +13,12 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany
-    private List<Room> rooms;
+
+    private Room room;
 
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
@@ -58,15 +59,12 @@ public class Booking {
         this.checkOutDate = checkOutDate;
     }
 
-    public List<Room> getRoom() {
-        return rooms;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoom(List<Room> rooms) {
-        this.rooms = rooms;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public void addRoomToBooking(Room room){
-        rooms.add(room);
-    }
 }

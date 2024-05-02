@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vibesra")
-@CrossOrigin
-public class VibesRaController {
+@RequestMapping("/api/hotel")
+public class HotelController {
 
     @Autowired
     private HotelService hotelService;
@@ -48,3 +47,5 @@ public class VibesRaController {
         return new ResponseEntity<>(hotel, HttpStatus.OK);
     }
 }
+
+

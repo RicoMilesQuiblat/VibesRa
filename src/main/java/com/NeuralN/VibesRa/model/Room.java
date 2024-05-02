@@ -9,7 +9,8 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
     private String type;

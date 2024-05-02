@@ -17,6 +17,9 @@ public class Hotel {
     private String location;
 
     public Hotel(){}
+    public Hotel(int hotelID){
+        this.hotelID = hotelID;
+    }
 
     public String getLocation() {
         return location;
