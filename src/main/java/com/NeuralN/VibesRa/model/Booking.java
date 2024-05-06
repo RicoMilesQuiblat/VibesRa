@@ -17,9 +17,6 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id", nullable = false)
@@ -31,6 +28,7 @@ public class Booking {
     private double totalPrice;
 
     public Booking(){}
+
 
     public User getUser() {
         return user;
@@ -72,11 +70,4 @@ public class Booking {
         this.room = room;
     }
 
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
 }
