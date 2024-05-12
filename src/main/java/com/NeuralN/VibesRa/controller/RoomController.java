@@ -24,7 +24,7 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @GetMapping
+    @GetMapping 
     public List<Room> getAllRooms() {
         return roomService.getAllRooms();
     }

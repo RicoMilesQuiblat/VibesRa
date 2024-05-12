@@ -1,22 +1,17 @@
 package com.NeuralN.VibesRa.service;
 
-import java.util.List;
-
-import com.NeuralN.VibesRa.repository.UserRepository;
+import com.NeuralN.VibesRa.model.Room;
+import com.NeuralN.VibesRa.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.NeuralN.VibesRa.model.Room;
-import com.NeuralN.VibesRa.repository.RoomRepository;
+import java.util.List;
 
 @Service
 public class RoomService {
 
     @Autowired
     private RoomRepository roomRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
