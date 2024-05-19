@@ -46,7 +46,7 @@ public class BookingService {
         Hotel hotel = hotelRepository.findById(bookingDTO.getHotelId()).orElse(null);
 
         if (user == null || hotel == null) {
-            return null;  // Handle this appropriately in a real application
+            return null;
         }
 
         Set<Room> rooms = new HashSet<>();

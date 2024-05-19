@@ -15,10 +15,18 @@ public class Hotel {
 
     private String name;
     private String location;
+    private String description;
+    private String image;
 
-    public Hotel(){}
-    public Hotel(int hotelID){
+    public Hotel(int hotelID, String name, String location, String description, String image) {
         this.hotelID = hotelID;
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.image = image;
+    }
+
+    public Hotel() {
     }
 
     public String getLocation() {
@@ -35,5 +43,13 @@ public class Hotel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getHotelID() {
+        return hotelID;
+    }
+
+    public void setHotelID(int hotelID) {
+        this.hotelID = hotelID;
     }
 }

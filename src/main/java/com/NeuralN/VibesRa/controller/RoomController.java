@@ -40,8 +40,9 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
-        System.out.println(room);
-        return new ResponseEntity<>(roomService.saveRoom(room), HttpStatus.CREATED);
+        System.out.println("Room: " + room.getHotel().getHotelID());
+        Room newRoom = roomService.saveRoom(room);
+        return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{roomId}")

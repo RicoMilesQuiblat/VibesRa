@@ -3,6 +3,7 @@ package com.NeuralN.VibesRa.controller;
 
 import com.NeuralN.VibesRa.model.Hotel;
 import com.NeuralN.VibesRa.service.HotelService;
+import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,12 @@ import java.util.List;
 @RequestMapping("/api/hotel")
 public class HotelController {
 
+    final Slugify slg = Slugify.builder().build();
+
     @Autowired
     private HotelService hotelService;
 
-    @PostMapping("/addHotel")
+    @PostMapping("/create")
     public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel){
         Hotel newHotel = hotelService.addHotel(hotel.getName(), hotel.getLocation());
         return new ResponseEntity<>(newHotel, HttpStatus.CREATED);
@@ -29,22 +32,32 @@ public class HotelController {
         return new ResponseEntity<>(allHotels, HttpStatus.OK);
     }
 
-    @GetMapping("/hotel")
-    public ResponseEntity<Hotel> getHotelByName(@RequestParam String name){
-        Hotel hotel = hotelService.getHotelByName(name);
+    @GetMapping("")
+    public ResponseEntity<Hotel> getHotelById(@RequestParam Integer id){
+        Hotel hotel = hotelService.getHotelById(id);
         return new ResponseEntity<>(hotel, HttpStatus.OK);
     }
 
     @GetMapping("/location")
-    public ResponseEntity<List<Hotel>> getHotelsByLocation(@RequestParam String location){
-        List<Hotel> hotels = hotelService.getHotelsByLocation(location);
+    public ResponseEntity<List<Hotel>> getHotelsByLocation(@RequestParam String name){
+        List<Hotel> hotels = hotelService.getHotelsByLocation(name);
         return new ResponseEntity<>(hotels,HttpStatus.OK );
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Hotel> deleteHotel(@RequestParam String name){
-        Hotel hotel = hotelService.deleteHotel(name);
+    public ResponseEntity<Hotel> deleteHotel(@RequestParam Integer id){
+        Hotel hotel = hotelService.deleteHotel(id);
         return new ResponseEntity<>(hotel, HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updateHotel(@RequestBody Hotel hotel){
+        Boolean updated = hotelService.updateHotel(hotel);
+
+        if (updated){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 }
 

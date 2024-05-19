@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/bookings")
+@RequestMapping("/api/booking")
 public class BookingController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class BookingController {
         return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{bookingID}")
+    @PutMapping("/{bookingID}/update")
     public ResponseEntity<Booking> updateBooking(@PathVariable int bookingID, @RequestBody BookingDTO bookingDTO) {
         Booking updatedBooking = bookingService.updateBooking(bookingID, bookingDTO);
         if (updatedBooking == null) {
@@ -50,7 +50,7 @@ public class BookingController {
         return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{bookingID}")
+    @DeleteMapping("/{bookingID}/delete")
     public ResponseEntity<Void> deleteBooking(@PathVariable int bookingID) {
         bookingService.deleteBooking(bookingID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

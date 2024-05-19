@@ -3,15 +3,25 @@ package com.NeuralN.VibesRa.model;
 
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomID;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "hotel_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false, targetEntity = Hotel.class)
+    @JoinColumn(name = "hotel_id", nullable = false, referencedColumnName = "hotelID")
     private Hotel hotel;
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
 
     private String type;
 

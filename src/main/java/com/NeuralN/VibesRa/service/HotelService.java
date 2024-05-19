@@ -25,9 +25,9 @@ public class HotelService {
         return hotelRepository.findAll();
     }
 
-    public Hotel getHotelByName(String name){
-        Optional<Hotel> hotel = hotelRepository.findByName(name);
-        if(!hotel.isPresent()){
+    public Hotel getHotelById(Integer id){
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+        if(hotel.isEmpty()){
             return null;
         }
         return hotel.get();
@@ -41,14 +41,23 @@ public class HotelService {
         return hotel.get();
     }
 
-    public Hotel deleteHotel(String name){
-        Optional<Hotel> hotel = hotelRepository.findByName(name);
+    public Hotel deleteHotel(Integer id){
+        Optional<Hotel> hotel = hotelRepository.findById(id);
         if(hotel.isPresent()){
             System.out.println(hotel.get());
             hotelRepository.delete(hotel.get());
             return hotel.get();
         }
         return null;
+    }
+
+    public Boolean updateHotel(Hotel hotel){
+        Optional<Hotel> hotel1 = hotelRepository.findById(hotel.getHotelID());
+        if(hotel1.isPresent()){
+            hotelRepository.save(hotel);
+            return true;
+        }
+        return false;
     }
 
 }

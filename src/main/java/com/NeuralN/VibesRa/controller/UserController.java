@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/addUser")
+    @PostMapping("/create")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         User newUser = userService.addUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
@@ -30,8 +30,8 @@ public class UserController {
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
-    @GetMapping("/getUser")
-    public ResponseEntity<User> getUserById(@RequestParam int userId) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable int userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -40,7 +40,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/{userId}/update")
     public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody User newUser) {
         User updatedUser = userService.updateUser(userId, newUser);
         if (updatedUser != null) {
@@ -50,11 +50,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/{userId}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }
