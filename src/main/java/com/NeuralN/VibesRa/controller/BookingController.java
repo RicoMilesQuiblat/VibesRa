@@ -1,5 +1,6 @@
 package com.NeuralN.VibesRa.controller;
 
+import com.NeuralN.VibesRa.dto.BookingDTO;
 import com.NeuralN.VibesRa.model.Booking;
 import com.NeuralN.VibesRa.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,14 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping
-    public List<Booking> getAllBookings() {
-        return bookingService.getAllBookings();
+    public ResponseEntity<List<Booking>> getAllBookings() {
+        List<Booking> bookings = bookingService.getAllBookings();
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
-    @GetMapping("/{bookingId}")
-    public ResponseEntity<Booking> getBookingById(@PathVariable int bookingId) {
-        Booking booking = bookingService.getBookingById(bookingId);
+    @GetMapping("/{bookingID}")
+    public ResponseEntity<Booking> getBookingById(@PathVariable int bookingID) {
+        Booking booking = bookingService.getBookingById(bookingID);
         if (booking == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -31,22 +33,26 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<Booking> saveBooking(@RequestBody Booking booking) {
-        return new ResponseEntity<>(bookingService.saveBooking(booking), HttpStatus.CREATED);
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO bookingDTO) {
+        Booking savedBooking = bookingService.saveBooking(bookingDTO);
+        if (savedBooking == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{bookingId}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable int bookingId, @RequestBody Booking updatedBooking) {
-        Booking booking = bookingService.updateBooking(bookingId, updatedBooking);
-        if (booking == null) {
+    @PutMapping("/{bookingID}")
+    public ResponseEntity<Booking> updateBooking(@PathVariable int bookingID, @RequestBody BookingDTO bookingDTO) {
+        Booking updatedBooking = bookingService.updateBooking(bookingID, bookingDTO);
+        if (updatedBooking == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(booking, HttpStatus.OK);
+        return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{bookingId}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable int bookingId) {
-        bookingService.deleteBooking(bookingId);
+    @DeleteMapping("/{bookingID}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable int bookingID) {
+        bookingService.deleteBooking(bookingID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
