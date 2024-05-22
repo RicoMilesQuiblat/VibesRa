@@ -1,36 +1,26 @@
 package com.NeuralN.VibesRa.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Data
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
-    private int reviewId;
+    private Long id;
 
-    @Getter
-    @Setter
     private int rating;
-
-    @Getter
-    @Setter
-    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
-    @Getter
-    @Setter
     private HotelRoom hotel;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @Getter
-    @Setter
     private User user;
 }

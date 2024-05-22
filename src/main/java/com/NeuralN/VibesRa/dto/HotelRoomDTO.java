@@ -1,31 +1,19 @@
-package com.NeuralN.VibesRa.model;
+package com.NeuralN.VibesRa.dto;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class HotelRoom {
+public class HotelRoomDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long hotelID;
 
-    @ElementCollection
-    @CollectionTable(name = "room_images", joinColumns = @JoinColumn(name = "room_id"))
-    @Column(name = "image_link")
     @Size(min = 3, message = "Minimum of 3 images required")
     private List<String> images = new ArrayList<>();
 
@@ -34,16 +22,6 @@ public class HotelRoom {
     private String description;
     private String contact;
     private String email;
-
-    @Embedded
-    private CoverImage coverImage;
-
-    @Embeddable
-    @Data
-    public static class CoverImage {
-        private String url;
-        private String file;
-    }
 
     @NotBlank(message = "Special Note is required")
     private String specialNote = "Check-in time is 12:00 PM, checkout time is 11:59 AM. If you leave behind any items, please contact the receptionist.";
@@ -60,19 +38,22 @@ public class HotelRoom {
     @Min(value = 1, message = "At least 1 bed is required")
     private Integer numberOfBeds = 1;
 
-    @ElementCollection
-    @CollectionTable(name = "room_amenities", joinColumns = @JoinColumn(name = "room_id"))
-    private List<Amenity> offeredAmenities = new ArrayList<>();
+    private List<AmenityDTO> offeredAmenities = new ArrayList<>();
 
     @NotBlank(message = "Slug is required")
     private String slug;
 
-    @Embeddable
+    private CoverImageDTO coverImage;
+
     @Data
-    public static class Amenity {
+    public static class CoverImageDTO {
+        private String url;
+        private String file;
+    }
+
+    @Data
+    public static class AmenityDTO {
         private String icon;
         private String amenity;
     }
-
-    private int rating = 0;
 }

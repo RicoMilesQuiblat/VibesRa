@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HotelRoomRepository extends JpaRepository<HotelRoom, Integer> {
+public interface HotelRoomRepository extends JpaRepository<HotelRoom, Long> {
     Optional<List<HotelRoom>> findByLocation(String location);
 }

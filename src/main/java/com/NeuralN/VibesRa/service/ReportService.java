@@ -18,7 +18,7 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public Report getReportById(int reportId) {
+    public Report getReportById(Long reportId) {
         Optional<Report> report = reportRepository.findById(reportId);
         return report.orElse(null);
     }
@@ -27,7 +27,7 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
-    public void deleteReport(int reportId) {
+    public void deleteReport(Long reportId) {
         reportRepository.deleteById(reportId);
     }
 }

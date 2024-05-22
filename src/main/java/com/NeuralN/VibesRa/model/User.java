@@ -11,35 +11,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
+    private Long id;
 
-    @Getter
-    @Setter
     @Column(unique = true)
     private String username;
 
-    @Getter
-    @Setter
-    @Column
     private String firstname;
-
-    @Getter
-    @Setter
-    @Column
     private String lastname;
-
-    @Getter
-    @Setter
-    @Column
     private String email;
-
-    @Getter
-    @Setter
-    @Column
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Getter
-    @Setter
     private Role role;
 }

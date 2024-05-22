@@ -1,7 +1,9 @@
 package com.NeuralN.VibesRa.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class AuthResponse {
     @JsonProperty("access_token")
     private String accessToken;
@@ -16,17 +18,5 @@ public class AuthResponse {
         this.accessToken = accessToken;
         this.message = message;
         this.refreshToken = refreshToken;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }

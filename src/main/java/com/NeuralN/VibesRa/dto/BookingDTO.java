@@ -1,13 +1,20 @@
 package com.NeuralN.VibesRa.dto;
 
+import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.util.Set;
 
 @Data
 public class BookingDTO {
-    private int bookingID;
-    private int userID;
-    private int hotelID;
-    private int paymentHistoryID;
+    private Long bookingID;
+    private Long userID;
+    private Long hotelID;
+    private Long paymentHistoryID;
+    private String checkInDate;
+    private String checkOutDate;
+    private int noOfRooms;
+    private int noOfAdults;
+    private int noOfChildren;
+    private String bookingStatus;
 }

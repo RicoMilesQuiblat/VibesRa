@@ -22,7 +22,7 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public Review getReviewById(int reviewId) {
+    public Review getReviewById(Long reviewId) {
         Optional<Review> review = reviewRepository.findById(reviewId);
         return review.orElse(null);
     }
@@ -31,16 +31,16 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public void deleteReview(int reviewId) {
+    public void deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
     }
 
-    public Review updateReview(int reviewId, Review updatedReview) {
+    public Review updateReview(Long reviewId, Review updatedReview) {
         Review existingReview = getReviewById(reviewId);
         if (existingReview == null) {
             return null;
         }
-        updatedReview.setReviewId(reviewId);
+        updatedReview.setId(reviewId);
         return reviewRepository.save(updatedReview);
     }
 }

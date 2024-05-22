@@ -22,7 +22,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<Review> getReviewById(@PathVariable int reviewId) {
+    public ResponseEntity<Review> getReviewById(@PathVariable Long reviewId) {
         Review review = reviewService.getReviewById(reviewId);
         if (review == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -37,7 +37,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{reviewId}/update")
-    public ResponseEntity<Review> updateReview(@PathVariable int reviewId, @RequestBody Review updatedReview) {
+    public ResponseEntity<Review> updateReview(@PathVariable Long reviewId, @RequestBody Review updatedReview) {
         Review review = reviewService.updateReview(reviewId, updatedReview);
         if (review == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,7 +46,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}/delete")
-    public ResponseEntity<Void> deleteReview(@PathVariable int reviewId) {
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
         reviewService.deleteReview(reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
