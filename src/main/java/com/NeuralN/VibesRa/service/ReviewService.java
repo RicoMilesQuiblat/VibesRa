@@ -1,6 +1,8 @@
 package com.NeuralN.VibesRa.service;
 
 import com.NeuralN.VibesRa.model.Review;
+import com.NeuralN.VibesRa.model.User;
+import com.NeuralN.VibesRa.repository.HotelRepository;
 import com.NeuralN.VibesRa.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private HotelRepository hotelRepository;
 
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
@@ -34,7 +39,7 @@ public class ReviewService {
     public Review updateReview(int reviewId, Review updatedReview) {
         Review existingReview = getReviewById(reviewId);
         if (existingReview == null) {
-            return null; // or throw exception
+            return null;
         }
         updatedReview.setReviewId(reviewId);
         return reviewRepository.save(updatedReview);

@@ -1,24 +1,16 @@
 package com.NeuralN.VibesRa.controller;
 
-import java.util.List;
-
+import com.NeuralN.VibesRa.model.Room;
+import com.NeuralN.VibesRa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.NeuralN.VibesRa.model.Room;
-import com.NeuralN.VibesRa.service.RoomService;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/rooms")
+@RequestMapping("/api/room")
 public class RoomController {
 
     @Autowired
@@ -29,7 +21,7 @@ public class RoomController {
         return roomService.getAllRooms();
     }
 
-    @GetMapping("/{roomId}")
+    @GetMapping("/get/{roomId}")
     public ResponseEntity<Room> getRoomById(@PathVariable Integer roomId) {
         Room room = roomService.getRoomById(roomId);
         if (room == null) {
@@ -38,7 +30,7 @@ public class RoomController {
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
         System.out.println("Room: " + room.getHotel().getHotelID());
         Room newRoom = roomService.saveRoom(room);

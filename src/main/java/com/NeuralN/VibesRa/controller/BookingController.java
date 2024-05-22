@@ -17,7 +17,7 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping
+    @GetMapping("/get/allBookings")
     public ResponseEntity<List<Booking>> getAllBookings() {
         List<Booking> bookings = bookingService.getAllBookings();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
@@ -32,7 +32,7 @@ public class BookingController {
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO bookingDTO) {
         Booking savedBooking = bookingService.saveBooking(bookingDTO);
         if (savedBooking == null) {

@@ -1,13 +1,19 @@
 package com.NeuralN.VibesRa.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paymentId;
+    private Long paymentId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -17,49 +23,13 @@ public class Payment {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
+    @Column
+    @Getter
+    @Setter
     private double amount;
 
-    private String status; // Changed to a String field for payment status
-
-    public Payment() {}
-
-    public int getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    @Column
+    @Getter
+    @Setter
+    private String status;
 }

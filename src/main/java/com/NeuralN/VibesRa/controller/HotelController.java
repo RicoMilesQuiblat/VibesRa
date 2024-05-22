@@ -3,7 +3,6 @@ package com.NeuralN.VibesRa.controller;
 
 import com.NeuralN.VibesRa.model.Hotel;
 import com.NeuralN.VibesRa.service.HotelService;
-import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,6 @@ import java.util.List;
 @RequestMapping("/api/hotel")
 public class HotelController {
 
-    final Slugify slg = Slugify.builder().build();
-
     @Autowired
     private HotelService hotelService;
 
@@ -26,19 +23,19 @@ public class HotelController {
         return new ResponseEntity<>(newHotel, HttpStatus.CREATED);
     }
 
-    @GetMapping("/allHotels")
+    @GetMapping("/get/allHotels")
     public ResponseEntity<List<Hotel>> getAllHotels(){
         List<Hotel> allHotels = hotelService.getAllHotels();
         return new ResponseEntity<>(allHotels, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/get")
     public ResponseEntity<Hotel> getHotelById(@RequestParam Integer id){
         Hotel hotel = hotelService.getHotelById(id);
         return new ResponseEntity<>(hotel, HttpStatus.OK);
     }
 
-    @GetMapping("/location")
+    @GetMapping("/get/location")
     public ResponseEntity<List<Hotel>> getHotelsByLocation(@RequestParam String name){
         List<Hotel> hotels = hotelService.getHotelsByLocation(name);
         return new ResponseEntity<>(hotels,HttpStatus.OK );

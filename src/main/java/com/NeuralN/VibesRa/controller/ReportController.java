@@ -30,7 +30,7 @@ public class ReportController {
         return new ResponseEntity<>(report, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Report> saveReport(@RequestBody Report report) {
         return new ResponseEntity<>(reportService.saveReport(report), HttpStatus.CREATED);
     }

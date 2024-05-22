@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/api/review")
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping
+    @GetMapping("/get/all")
     public List<Review> getAllReviews() {
         return reviewService.getAllReviews();
     }
@@ -30,12 +30,13 @@ public class ReviewController {
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
-    @PostMapping
+
+    @PostMapping("/create")
     public ResponseEntity<Review> saveReview(@RequestBody Review review) {
         return new ResponseEntity<>(reviewService.saveReview(review), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{reviewId}")
+    @PutMapping("/{reviewId}/update")
     public ResponseEntity<Review> updateReview(@PathVariable int reviewId, @RequestBody Review updatedReview) {
         Review review = reviewService.updateReview(reviewId, updatedReview);
         if (review == null) {
@@ -44,7 +45,7 @@ public class ReviewController {
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{reviewId}")
+    @DeleteMapping("/{reviewId}/delete")
     public ResponseEntity<Void> deleteReview(@PathVariable int reviewId) {
         reviewService.deleteReview(reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

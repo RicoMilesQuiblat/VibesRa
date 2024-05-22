@@ -1,10 +1,8 @@
 package com.NeuralN.VibesRa.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Hotel {
@@ -13,10 +11,15 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hotelID;
 
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Image> images;
+
     private String name;
     private String location;
     private String description;
     private String image;
+
+
 
     public Hotel(int hotelID, String name, String location, String description, String image) {
         this.hotelID = hotelID;
