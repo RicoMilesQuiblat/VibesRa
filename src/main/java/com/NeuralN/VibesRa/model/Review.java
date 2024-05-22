@@ -26,7 +26,7 @@ public class Review {
     @JoinColumn(name = "hotel_id", nullable = false)
     @Getter
     @Setter
-    private Hotel hotel;
+    private HotelRoom hotel;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

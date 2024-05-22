@@ -1,9 +1,11 @@
 package com.NeuralN.VibesRa.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "token")
+@Data
 public class Token {
 
     @Id

@@ -1,10 +1,12 @@
 package com.NeuralN.VibesRa.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Set;
 
 @Entity
+@Data
 public class Booking {
 
     @Id
@@ -15,50 +17,12 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-        name = "booking_rooms",
-        joinColumns = @JoinColumn(name = "booking_id"),
-        inverseJoinColumns = @JoinColumn(name = "room_id")
-    )
-    private Set<Room> rooms;
-
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+    private HotelRoom hotel;
 
-    public Booking() {}
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private PaymentHistory paymentHistory;
 
-    
-    public int getBookingID() {
-        return bookingID;
-    }
-
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Set<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
 }

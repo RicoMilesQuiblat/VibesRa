@@ -94,7 +94,13 @@
 		<dependency>
 			<groupId>com.stripe</groupId>
 			<artifactId>stripe-java</artifactId>
-			<version>21.12.0</version>
+			<version>25.8.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.slugify</groupId>
+			<artifactId>slugify</artifactId>
+			<version>3.0.6</version>
 		</dependency>
 
 		<dependency>

@@ -15,7 +15,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+    private HotelRoom hotel;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -38,11 +38,11 @@ public class Report {
         this.user = user;
     }
 
-    public Hotel getHotel() {
+    public HotelRoom getHotel() {
         return hotel;
     }
 
-    public void setHotel(Hotel hotel) {
+    public void setHotel(HotelRoom hotel) {
         this.hotel = hotel;
     }
 

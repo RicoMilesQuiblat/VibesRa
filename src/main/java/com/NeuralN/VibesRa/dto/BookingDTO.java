@@ -6,7 +6,8 @@ import java.util.Set;
 
 @Data
 public class BookingDTO {
-    private int userId;
-    private int hotelId;
-    private Set<Integer> roomIds;
+    private int bookingID;
+    private int userID;
+    private int hotelID;
+    private int paymentHistoryID;
 }

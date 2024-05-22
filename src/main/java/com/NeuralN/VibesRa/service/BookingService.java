@@ -2,12 +2,10 @@ package com.NeuralN.VibesRa.service;
 
 import com.NeuralN.VibesRa.dto.BookingDTO;
 import com.NeuralN.VibesRa.model.Booking;
-import com.NeuralN.VibesRa.model.Hotel;
-import com.NeuralN.VibesRa.model.Room;
+import com.NeuralN.VibesRa.model.HotelRoom;
 import com.NeuralN.VibesRa.model.User;
 import com.NeuralN.VibesRa.repository.BookingRepository;
-import com.NeuralN.VibesRa.repository.HotelRepository;
-import com.NeuralN.VibesRa.repository.RoomRepository;
+import com.NeuralN.VibesRa.repository.HotelRoomRepository;
 import com.NeuralN.VibesRa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +24,8 @@ public class BookingService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private HotelRoomRepository hotelRoomRepository;
 
-    @Autowired
-    private HotelRepository hotelRepository;
 
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
@@ -42,24 +38,15 @@ public class BookingService {
     public Booking saveBooking(BookingDTO bookingDTO) {
         Booking booking = new Booking();
 
-        User user = userRepository.findById(bookingDTO.getUserId()).orElse(null);
-        Hotel hotel = hotelRepository.findById(bookingDTO.getHotelId()).orElse(null);
+        User user = userRepository.findById(bookingDTO.getUserID()).orElse(null);
+        HotelRoom hotel = hotelRoomRepository.findById(bookingDTO.getHotelID()).orElse(null);
 
         if (user == null || hotel == null) {
             return null;
         }
 
-        Set<Room> rooms = new HashSet<>();
-        for (Integer roomId : bookingDTO.getRoomIds()) {
-            Room room = roomRepository.findById(roomId).orElse(null);
-            if (room != null) {
-                rooms.add(room);
-            }
-        }
-
         booking.setUser(user);
         booking.setHotel(hotel);
-        booking.setRooms(rooms);
 
         return bookingRepository.save(booking);
     }
@@ -68,30 +55,29 @@ public class BookingService {
         bookingRepository.deleteById(bookingID);
     }
 
+
     public Booking updateBooking(int bookingID, BookingDTO bookingDTO) {
         Booking booking = bookingRepository.findById(bookingID).orElse(null);
-        if (booking != null) {
-            User user = userRepository.findById(bookingDTO.getUserId()).orElse(null);
-            Hotel hotel = hotelRepository.findById(bookingDTO.getHotelId()).orElse(null);
 
-            if (user == null || hotel == null) {
-                return null;  // Handle this appropriately in a real application
-            }
-
-            Set<Room> rooms = new HashSet<>();
-            for (Integer roomId : bookingDTO.getRoomIds()) {
-                Room room = roomRepository.findById(roomId).orElse(null);
-                if (room != null) {
-                    rooms.add(room);
-                }
-            }
-
-            booking.setUser(user);
-            booking.setHotel(hotel);
-            booking.setRooms(rooms);
-
-            return bookingRepository.save(booking);
+        if (booking == null) {
+            return null;
         }
-        return null;
+
+        User user = userRepository.findById(bookingDTO.getUserID()).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        HotelRoom hotel = hotelRoomRepository.findById(bookingDTO.getHotelID()).orElse(null);
+
+        if (hotel == null) {
+            return null;
+        }
+
+        booking.setUser(user);
+        booking.setHotel(hotel);
+
+        return bookingRepository.save(booking);
     }
 }
