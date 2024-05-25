@@ -16,11 +16,12 @@ public class Review {
     private int rating;
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "hotel_id", nullable = false)
     private HotelRoom hotel;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
 }

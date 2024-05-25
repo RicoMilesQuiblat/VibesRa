@@ -2,6 +2,7 @@ package com.NeuralN.VibesRa.controller;
 
 
 import com.NeuralN.VibesRa.dto.HotelRoomDTO;
+import com.NeuralN.VibesRa.dto.HotelRoomRequestDTO;
 import com.NeuralN.VibesRa.model.HotelRoom;
 import com.NeuralN.VibesRa.service.HotelRoomService;
 import jakarta.validation.Valid;
@@ -21,8 +22,24 @@ public class HotelRoomController {
     private HotelRoomService hotelRoomService;
 
     @PostMapping("/create")
-    public ResponseEntity<HotelRoomDTO> createRoom(@Valid @RequestBody HotelRoomDTO hotelRoomDTO) {
-        HotelRoomDTO newRoom = hotelRoomService.saveRoom(hotelRoomDTO);
+    public ResponseEntity<HotelRoomDTO> createRoom(@Valid @RequestBody HotelRoomRequestDTO requestDTO) {
+        if (requestDTO.getHotelRoom().getName() == null) {
+            HotelRoomDTO hotel = new HotelRoomDTO();
+            hotel.setSlug("slug");
+            hotel.setUserId(requestDTO.getUserId());
+            hotel.setRoomImages(null);
+            hotel.setContact("contact");
+            hotel.setEmail("email");
+            hotel.setDescription("description");
+            hotel.setLocation("location");
+            hotel.setName("name");
+            hotel.setPrice(0.0);
+            hotel.setSpecialNote("specialNote");
+            hotel.setType("type");
+            hotel.setCoverImage("coverImage");
+            requestDTO.setHotelRoom(hotel);
+        }
+        HotelRoomDTO newRoom = hotelRoomService.saveRoom(requestDTO.getHotelRoom(), requestDTO.getUserId());
         return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
     }
 
@@ -54,9 +71,18 @@ public class HotelRoomController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<HotelRoomDTO> updateHotel(@RequestBody HotelRoomDTO hotel){
-        HotelRoomDTO newRoom = hotelRoomService.saveRoom(hotel);
-        return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
+    public ResponseEntity<HotelRoomDTO> updateHotel(@Valid @RequestBody HotelRoomRequestDTO requestDTO){
+        if (requestDTO.getHotelRoom().getUserId().equals(requestDTO.getUserId())) {
+            HotelRoomDTO newRoom = hotelRoomService.saveRoom(requestDTO.getHotelRoom(), requestDTO.getUserId());
+            return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<HotelRoomDTO> getLatestHotelByUserId(@RequestParam Long id) {
+        HotelRoomDTO hotels = hotelRoomService.getLatestHotelByUserId(id);
+        return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
 }
 

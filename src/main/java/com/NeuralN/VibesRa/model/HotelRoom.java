@@ -1,7 +1,11 @@
 package com.NeuralN.VibesRa.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -27,7 +30,13 @@ public class HotelRoom {
     @CollectionTable(name = "room_images", joinColumns = @JoinColumn(name = "room_id"))
     @Column(name = "image_link")
     @Size(min = 3, message = "Minimum of 3 images required")
-    private List<String> images = new ArrayList<>();
+    private List<String> roomImages = new ArrayList<>();
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     private String name;
     private String location;
@@ -35,8 +44,10 @@ public class HotelRoom {
     private String contact;
     private String email;
 
-    @Embedded
-    private CoverImage coverImage;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Booking> bookings;
+
+    private String coverImage;
 
     @Embeddable
     @Data
@@ -74,5 +85,14 @@ public class HotelRoom {
         private String amenity;
     }
 
-    private int rating = 0;
+    @Max(value = 5, message = "Rating must be between 0 and 5")
+    private double rating = 0;
+
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
+    private boolean addedCategory;
+    private boolean addedDescription;
+    private boolean addedLocation;
 }

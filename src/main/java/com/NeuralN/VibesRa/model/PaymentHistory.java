@@ -15,18 +15,16 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
-    private List<Booking> bookings;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private HotelRoom room;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     private Double amount;
     private Boolean success;
     private String message;
+    private String stripeToken;
 }

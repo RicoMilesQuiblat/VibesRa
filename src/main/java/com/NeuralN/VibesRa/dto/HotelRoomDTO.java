@@ -1,8 +1,8 @@
 package com.NeuralN.VibesRa.dto;
 
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -12,10 +12,13 @@ import java.util.List;
 @Data
 public class HotelRoomDTO {
 
-    private Long hotelID;
+    private Long hotelId;
 
-    @Size(min = 3, message = "Minimum of 3 images required")
-    private List<String> images = new ArrayList<>();
+    @Size(min = 2, message = "Minimum of 3 images required")
+    private List<String> roomImages = new ArrayList<>();
+
+    @NotNull(message = "User ID is required")
+    private Long userId;
 
     private String name;
     private String location;
@@ -43,17 +46,15 @@ public class HotelRoomDTO {
     @NotBlank(message = "Slug is required")
     private String slug;
 
-    private CoverImageDTO coverImage;
-
-    @Data
-    public static class CoverImageDTO {
-        private String url;
-        private String file;
-    }
+    private String coverImage;
 
     @Data
     public static class AmenityDTO {
         private String icon;
         private String amenity;
     }
+
+    private boolean addedCategory;
+    private boolean addedDescription;
+    private boolean addedLocation;
 }

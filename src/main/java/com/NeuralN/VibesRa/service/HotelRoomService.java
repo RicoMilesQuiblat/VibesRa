@@ -2,20 +2,28 @@ package com.NeuralN.VibesRa.service;
 
 import com.NeuralN.VibesRa.dto.HotelRoomDTO;
 import com.NeuralN.VibesRa.model.HotelRoom;
+import com.NeuralN.VibesRa.model.Image;
+import com.NeuralN.VibesRa.model.User;
 import com.NeuralN.VibesRa.repository.HotelRoomRepository;
+import com.NeuralN.VibesRa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.slugify.Slugify;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class HotelRoomService  {
+public class HotelRoomService {
 
     @Autowired
     private HotelRoomRepository hotelRoomRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     final Slugify slg = Slugify.builder().build();
 
@@ -24,13 +32,18 @@ public class HotelRoomService  {
         return rooms.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    public HotelRoom getById(Long id) {
+        return hotelRoomRepository.findById(id).orElse(null);
+    }
+
     public HotelRoomDTO getRoomById(Long id) {
         HotelRoom room = hotelRoomRepository.findById(id).orElse(null);
         return room != null ? convertToDTO(room) : null;
     }
 
-    public HotelRoomDTO saveRoom(HotelRoomDTO hotelRoomDTO) {
+    public HotelRoomDTO saveRoom(HotelRoomDTO hotelRoomDTO, Long userId) {
         hotelRoomDTO.setSlug(slg.slugify(hotelRoomDTO.getName()));
+        hotelRoomDTO.setUserId(userId);
         HotelRoom room = convertToEntity(hotelRoomDTO);
         HotelRoom savedRoom = hotelRoomRepository.save(room);
         return convertToDTO(savedRoom);
@@ -55,10 +68,19 @@ public class HotelRoomService  {
         return null;
     }
 
+    public Boolean isRoomBooked(Long id) {
+        HotelRoom room = hotelRoomRepository.findById(id).orElse(null);
+        if (room != null) {
+            return room.getIsBooked();
+        }
+        return null;
+    }
+
     private HotelRoomDTO convertToDTO(HotelRoom room) {
         HotelRoomDTO dto = new HotelRoomDTO();
-        dto.setHotelID(room.getId());
-        dto.setImages(room.getImages());
+        dto.setUserId(room.getUser().getId());
+        dto.setHotelId(room.getId());
+        dto.setRoomImages(room.getRoomImages());
         dto.setName(room.getName());
         dto.setLocation(room.getLocation());
         dto.setDescription(room.getDescription());
@@ -71,11 +93,15 @@ public class HotelRoomService  {
         dto.setDimension(room.getDimension());
         dto.setNumberOfBeds(room.getNumberOfBeds());
         dto.setSlug(slg.slugify(room.getName()));
+        dto.setCoverImage(room.getCoverImage());
+        dto.setAddedCategory(room.isAddedCategory());
+        dto.setAddedDescription(room.isAddedDescription());
+        dto.setAddedLocation(room.isAddedLocation());
 
-        HotelRoomDTO.CoverImageDTO coverImageDTO = new HotelRoomDTO.CoverImageDTO();
-        coverImageDTO.setUrl(room.getCoverImage().getUrl());
-        coverImageDTO.setFile(room.getCoverImage().getFile());
-        dto.setCoverImage(coverImageDTO);
+//        HotelRoomDTO.CoverImageDTO coverImageDTO = new HotelRoomDTO.CoverImageDTO();
+//        coverImageDTO.setUrl(room.getCoverImage().getUrl());
+//        coverImageDTO.setFile(room.getCoverImage().getFile());
+//        dto.setCoverImage(coverImageDTO);
 
         List<HotelRoomDTO.AmenityDTO> amenityDTOs = room.getOfferedAmenities().stream().map(amenity -> {
             HotelRoomDTO.AmenityDTO amenityDTO = new HotelRoomDTO.AmenityDTO();
@@ -90,8 +116,9 @@ public class HotelRoomService  {
 
     private HotelRoom convertToEntity(HotelRoomDTO dto) {
         HotelRoom room = new HotelRoom();
-        room.setId(dto.getHotelID());
-        room.setImages(dto.getImages());
+        room.setUser(userRepository.findById(dto.getUserId()).orElse(null));
+        room.setId(dto.getHotelId());
+        room.setRoomImages(dto.getRoomImages());
         room.setName(dto.getName());
         room.setLocation(dto.getLocation());
         room.setDescription(dto.getDescription());
@@ -103,12 +130,11 @@ public class HotelRoomService  {
         room.setType(dto.getType());
         room.setDimension(dto.getDimension());
         room.setNumberOfBeds(dto.getNumberOfBeds());
+        room.setCoverImage(dto.getCoverImage());
         room.setSlug(dto.getSlug());
-
-        HotelRoom.CoverImage coverImage = new HotelRoom.CoverImage();
-        coverImage.setUrl(dto.getCoverImage().getUrl());
-        coverImage.setFile(dto.getCoverImage().getFile());
-        room.setCoverImage(coverImage);
+        room.setAddedCategory(dto.isAddedCategory());
+        room.setAddedDescription(dto.isAddedDescription());
+        room.setAddedLocation(dto.isAddedLocation());
 
         List<HotelRoom.Amenity> amenities = dto.getOfferedAmenities().stream().map(amenityDTO -> {
             HotelRoom.Amenity amenity = new HotelRoom.Amenity();
@@ -122,7 +148,7 @@ public class HotelRoomService  {
     }
 
     private void updateEntityFromDTO(HotelRoom room, HotelRoomDTO dto) {
-        room.setImages(dto.getImages());
+        room.setRoomImages(dto.getRoomImages());
         room.setName(dto.getName());
         room.setLocation(dto.getLocation());
         room.setDescription(dto.getDescription());
@@ -135,11 +161,10 @@ public class HotelRoomService  {
         room.setDimension(dto.getDimension());
         room.setNumberOfBeds(dto.getNumberOfBeds());
         room.setSlug(slg.slugify(dto.getName()));
-
-        HotelRoom.CoverImage coverImage = new HotelRoom.CoverImage();
-        coverImage.setUrl(dto.getCoverImage().getUrl());
-        coverImage.setFile(dto.getCoverImage().getFile());
-        room.setCoverImage(coverImage);
+        room.setCoverImage(dto.getCoverImage());
+        room.setAddedCategory(dto.isAddedCategory());
+        room.setAddedDescription(dto.isAddedDescription());
+        room.setAddedLocation(dto.isAddedLocation());
 
         List<HotelRoom.Amenity> amenities = dto.getOfferedAmenities().stream().map(amenityDTO -> {
             HotelRoom.Amenity amenity = new HotelRoom.Amenity();
@@ -153,5 +178,16 @@ public class HotelRoomService  {
     public Optional<List<HotelRoomDTO>> getHotelsByLocation(String location) {
         Optional<List<HotelRoom>> hotels = hotelRoomRepository.findByLocation(location);
         return hotels.map(list -> list.stream().map(this::convertToDTO).collect(Collectors.toList()));
+    }
+
+
+    public HotelRoomDTO getLatestHotelByUserId(Long id) {
+        Optional<HotelRoom> hotelRoomOptional = hotelRoomRepository.findFirstByUserIdOrderByIdDesc(id);
+        if (hotelRoomOptional.isPresent()) {
+            HotelRoom hotelRoom = hotelRoomOptional.get();
+            return convertToDTO(hotelRoom);
+        } else {
+            return null;
+        }
     }
 }

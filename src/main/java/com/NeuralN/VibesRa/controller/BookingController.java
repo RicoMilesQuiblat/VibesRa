@@ -1,14 +1,20 @@
 package com.NeuralN.VibesRa.controller;
 
 import com.NeuralN.VibesRa.dto.BookingDTO;
+import com.NeuralN.VibesRa.dto.ImageUploadDTO;
 import com.NeuralN.VibesRa.model.Booking;
+import com.NeuralN.VibesRa.model.Image;
+import com.NeuralN.VibesRa.repository.ImageRepository;
 import com.NeuralN.VibesRa.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -16,6 +22,8 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @GetMapping
     public ResponseEntity<List<Booking>> getAllBookings() {
@@ -34,11 +42,18 @@ public class BookingController {
 
     @PostMapping("/create")
     public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO bookingDTO) {
-        Booking savedBooking = bookingService.saveBooking(bookingDTO);
-        if (savedBooking == null) {
+        try {
+            Booking savedBooking = bookingService.saveBooking(bookingDTO);
+            if (savedBooking == null) {
+                throw new Exception("Failed to save booking");
+            }
+            return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
     }
 
     @PutMapping("/update")

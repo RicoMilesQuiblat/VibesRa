@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "token")
@@ -24,10 +27,12 @@ public class Token {
     private String refreshToken;
 
     @Column(name = "is_logged_out")
-    private boolean loggedOut;
+    private boolean isLoggedOut;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @CreatedDate
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

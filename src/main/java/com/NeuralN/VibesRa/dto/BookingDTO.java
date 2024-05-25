@@ -3,6 +3,7 @@ package com.NeuralN.VibesRa.dto;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -11,8 +12,8 @@ public class BookingDTO {
     private Long userID;
     private Long hotelID;
     private Long paymentHistoryID;
-    private String checkInDate;
-    private String checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private int noOfRooms;
     private int noOfAdults;
     private int noOfChildren;

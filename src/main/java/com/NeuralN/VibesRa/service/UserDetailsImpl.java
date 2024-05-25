@@ -2,12 +2,14 @@ package com.NeuralN.VibesRa.service;
 
 import com.NeuralN.VibesRa.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@Data
 public class UserDetailsImpl implements UserDetails {
 
     private Long id;
@@ -36,15 +38,6 @@ public class UserDetailsImpl implements UserDetails {
         return Collections.emptyList();
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -64,10 +57,6 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Long getId() {
-        return id;
     }
 
 }

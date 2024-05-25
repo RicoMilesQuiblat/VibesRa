@@ -7,8 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.checkerframework.common.reflection.qual.GetConstructor;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.management.ConstructorParameters;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -29,17 +31,20 @@ public class Booking {
     @JoinColumn(name = "hotel_id", nullable = false)
     private HotelRoom hotel;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "payment_id", referencedColumnName = "id")
-    private PaymentHistory paymentHistory;
+//    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+//    private PaymentHistory paymentHistory;
 
-    private String checkInDate;
-    private String checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private int noOfRooms;
     private int noOfAdults;
     private int noOfChildren;
     private String bookingStatus;
     private int totalGuests;
+
+    @CreatedDate
+    private LocalDate createdAt = LocalDate.now();
 
     {
         this.bookingStatus = "PENDING";

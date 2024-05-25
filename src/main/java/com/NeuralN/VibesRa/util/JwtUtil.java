@@ -96,9 +96,7 @@ public class JwtUtil {
     }
 
     private SecretKey getSignInKey() {
-        System.out.println("Keys: " + jwtSecret);
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
-        System.out.println("Keys: " + Keys.hmacShaKeyFor(keyBytes));
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -109,7 +107,6 @@ public class JwtUtil {
                 .findByAccessToken(token)
                 .map(t -> !t.isLoggedOut())
                 .orElse(false);
-
         return (username.equals(user.getUsername())) && !isTokenExpired(token) && validToken;
     }
 

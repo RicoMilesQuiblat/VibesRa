@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface HotelRoomRepository extends JpaRepository<HotelRoom, Long> {
     Optional<List<HotelRoom>> findByLocation(String location);
+
+    Optional<HotelRoom> findFirstByUserIdOrderByIdDesc(Long id);
 }

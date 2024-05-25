@@ -14,9 +14,13 @@ public class AuthResponse {
     @JsonProperty("message")
     private String message;
 
-    public AuthResponse(String accessToken, String refreshToken, String message) {
+    private User user;
+
+    public AuthResponse(String accessToken, String refreshToken, String message, User user) {
         this.accessToken = accessToken;
         this.message = message;
         this.refreshToken = refreshToken;
+        this.user = user;
     }
+
 }
