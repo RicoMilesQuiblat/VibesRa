@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/reports")
@@ -22,7 +23,7 @@ public class ReportController {
     }
 
     @GetMapping("/{reportId}")
-    public ResponseEntity<Report> getReportById(@PathVariable Long reportId) {
+    public ResponseEntity<Report> getReportById(@PathVariable UUID reportId) {
         Report report = reportService.getReportById(reportId);
         if (report == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,7 +37,7 @@ public class ReportController {
     }
 
     @DeleteMapping("/{reportId}")
-    public ResponseEntity<Void> deleteReport(@PathVariable Long reportId) {
+    public ResponseEntity<Void> deleteReport(@PathVariable UUID reportId) {
         reportService.deleteReport(reportId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

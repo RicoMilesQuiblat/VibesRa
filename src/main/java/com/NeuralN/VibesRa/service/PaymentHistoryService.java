@@ -19,12 +19,11 @@ public class PaymentHistoryService {
         paymentHistory.setAmount(stripeChargeDTO.getAmount());
         paymentHistory.setSuccess(stripeChargeDTO.getSuccess());
         paymentHistory.setMessage(stripeChargeDTO.getMessage());
-        paymentHistory.setStripeToken(stripeChargeDTO.getStripeToken());
+        paymentHistory.setStripeToken(stripeChargeDTO.getSessionId());
         paymentHistory.setRoom(room);
         paymentHistory.setUser(user);
         return paymentHistoryRepository.save(paymentHistory);
     }
-
 }
 
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -20,15 +21,15 @@ public class ImageService {
         return imageRepository.findAll();
     }
 
-    public void deleteImageById(Long id) {
+    public void deleteImageById(UUID id) {
         imageRepository.deleteById(id);
     }
 
-    public void deleteAllImagesByHotelID(Long hotelID) {
+    public void deleteAllImagesByHotelID(UUID hotelID) {
         imageRepository.deleteByHotelId(hotelID);
     }
 
-    public List<Image> getImagesByHotelID(Long hotelID) {
+    public List<Image> getImagesByHotelID(UUID hotelID) {
         return imageRepository.findByHotelId(hotelID);
     }
 
@@ -40,11 +41,11 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public boolean existsById(Long id) {
+    public boolean existsById(UUID id) {
         return imageRepository.existsById(id);
     }
 
-    public Image getImageById(Long id) {
+    public Image getImageById(UUID id) {
         return imageRepository.findById(id).orElse(null);
     }
 }

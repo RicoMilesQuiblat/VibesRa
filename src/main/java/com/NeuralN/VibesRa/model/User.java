@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -14,8 +14,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @Column(unique = true)
     private String username;
@@ -28,15 +28,22 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JsonManagedReference(value = "user-favorite")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Favorite> favorites;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<HotelRoom> hotelRooms;
 
-    public User(Long id, String username, String firstname, String lastname, String email) {
+    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Token> tokens;
+
+    public User(UUID id, String username, String firstname, String lastname, String email) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ReviewService {
@@ -22,7 +23,7 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public Review getReviewById(Long reviewId) {
+    public Review getReviewById(UUID reviewId) {
         Optional<Review> review = reviewRepository.findById(reviewId);
         return review.orElse(null);
     }
@@ -31,11 +32,11 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(UUID reviewId) {
         reviewRepository.deleteById(reviewId);
     }
 
-    public Review updateReview(Long reviewId, Review updatedReview) {
+    public Review updateReview(UUID reviewId, Review updatedReview) {
         Review existingReview = getReviewById(reviewId);
         if (existingReview == null) {
             return null;

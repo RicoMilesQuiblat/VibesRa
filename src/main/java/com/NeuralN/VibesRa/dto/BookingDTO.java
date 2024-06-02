@@ -5,17 +5,19 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class BookingDTO {
-    private Long bookingID;
-    private Long userID;
-    private Long hotelID;
-    private Long paymentHistoryID;
+    private UUID bookingID;
+    private UUID userID;
+    private UUID hotelID;
+    private UUID paymentHistoryID;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private int noOfRooms;
-    private int noOfAdults;
-    private int noOfChildren;
     private String bookingStatus;
+    private String description;
+    private String location;
+    private String coverImage;
+    private double price;
 }

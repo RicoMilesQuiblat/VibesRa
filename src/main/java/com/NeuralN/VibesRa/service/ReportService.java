@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ReportService {
@@ -18,7 +19,7 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public Report getReportById(Long reportId) {
+    public Report getReportById(UUID reportId) {
         Optional<Report> report = reportRepository.findById(reportId);
         return report.orElse(null);
     }
@@ -27,7 +28,7 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
-    public void deleteReport(Long reportId) {
+    public void deleteReport(UUID reportId) {
         reportRepository.deleteById(reportId);
     }
 }

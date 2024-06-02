@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/review")
@@ -22,7 +23,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long reviewId) {
+    public ResponseEntity<Review> getReviewById(@PathVariable UUID reviewId) {
         Review review = reviewService.getReviewById(reviewId);
         if (review == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -37,7 +38,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{reviewId}/update")
-    public ResponseEntity<Review> updateReview(@PathVariable Long reviewId, @RequestBody Review updatedReview) {
+    public ResponseEntity<Review> updateReview(@PathVariable UUID reviewId, @RequestBody Review updatedReview) {
         Review review = reviewService.updateReview(reviewId, updatedReview);
         if (review == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,7 +47,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}/delete")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
+    public ResponseEntity<Void> deleteReview(@PathVariable UUID reviewId) {
         reviewService.deleteReview(reviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

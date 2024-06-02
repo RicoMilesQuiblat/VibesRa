@@ -1,5 +1,6 @@
 package com.NeuralN.VibesRa.dto;
 
+import com.NeuralN.VibesRa.model.Favorite;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,17 +9,18 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class HotelRoomDTO {
 
-    private Long hotelId;
+    private UUID hotelId;
 
     @Size(min = 2, message = "Minimum of 3 images required")
     private List<String> roomImages = new ArrayList<>();
 
     @NotNull(message = "User ID is required")
-    private Long userId;
+    private UUID userId;
 
     private String name;
     private String location;
@@ -34,14 +36,22 @@ public class HotelRoomDTO {
     private Boolean isBooked = false;
 
     @NotBlank(message = "Room Type is required")
-    private String type = "basic";
+    private String type;
 
     private String dimension;
 
-    @Min(value = 1, message = "At least 1 bed is required")
-    private Integer numberOfBeds = 1;
+    @Min(value = 1, message = "At least 1 bedroom is required")
+    private Integer numOfBedrooms = 1;
+
+    @Min(value = 1, message = "At least 1 bathroom is required")
+    private Integer numOfBathrooms = 1;
+
+    @Min(value = 1, message = "At least 1 guest is required")
+    private Integer numOfGuests = 1;
 
     private List<AmenityDTO> offeredAmenities = new ArrayList<>();
+
+    private List<Favorite> favorites = new ArrayList<>();
 
     @NotBlank(message = "Slug is required")
     private String slug;

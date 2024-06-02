@@ -1,5 +1,6 @@
 package com.NeuralN.VibesRa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.management.ConstructorParameters;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -20,35 +22,29 @@ import java.util.Set;
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "hotel_id", nullable = false)
     private HotelRoom hotel;
 
-//    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "payment_id", referencedColumnName = "id")
-//    private PaymentHistory paymentHistory;
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id", nullable = false)
+    private PaymentHistory paymentHistory;
 
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private int noOfRooms;
-    private int noOfAdults;
-    private int noOfChildren;
     private String bookingStatus;
-    private int totalGuests;
 
     @CreatedDate
     private LocalDate createdAt = LocalDate.now();
-
-    {
-        this.bookingStatus = "PENDING";
-        this.totalGuests = this.noOfAdults + this.noOfChildren;
-    }
 
 }

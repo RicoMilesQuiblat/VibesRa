@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/cloudinary")
@@ -39,7 +40,7 @@ public class CloudinaryController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public ResponseEntity<String> upload(@RequestParam MultipartFile multipartFile, @RequestParam Long id) throws IOException {
+    public ResponseEntity<String> upload(@RequestParam MultipartFile multipartFile, @RequestParam UUID id) throws IOException {
         BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
         if (bi == null) {
             return new ResponseEntity<>("Image not found!", HttpStatus.BAD_REQUEST);
@@ -57,7 +58,7 @@ public class CloudinaryController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
         Optional<Image> imageOptional = Optional.ofNullable(imageService.getImageById(id));
         if (imageOptional.isEmpty()) {
             return new ResponseEntity<>("Image does not exist!", HttpStatus.NOT_FOUND);
